@@ -17,13 +17,13 @@
 > per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
-  _Your answer here._
+  - The least cost path to a relic can span over multiple different nodes which cannot be found in a single run.
 
 - **What decision remains after all inter-location costs are known:**
-  _Your answer here._
+  - Check to see if lower cost paths can be found to each node.
 
 - **Why this requires a search over orders (one sentence):**
-  _Your answer here._
+  - After a new lower cost path is found, a search needs to be conducted again to see if that path leads to lower cost paths to other nodes.
 
 ---
 

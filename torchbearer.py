@@ -32,9 +32,11 @@ def explain_problem():
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
 
-    TODO
-    """
-    return "TODO"
+    """    
+    explanation = "The algorithm cannot be solved as a single shortest-path since certain nodes in the graph must be explored with the shortest path. \n After all inter-location costs are known, the edges forming the least cost path from the start node need to be chosen. \n In order to find the least cost poaths to specific nodes efficiently, an edge relaxation method would function better."
+
+    
+    return explanation
 
 
 # =============================================================================

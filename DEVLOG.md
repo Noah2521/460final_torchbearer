@@ -10,12 +10,13 @@
 
 ---
 
-## Entry 1 – [Date]: Initial Plan
+## Entry 1 – [5/11/2026]: Initial Plan
 
 > Required. Write this before writing any code. Describe your plan: what you will
 > implement first, what parts you expect to be difficult, and how you plan to test.
 
-_Your entry here._
+The plan is probably just to go in order with each part in order. From what I went over, the hardest parts are going to be the actual implementation of Dijktra's and the MST bottom
+up implementation. Also thinking of testing each method individually in a separate .py file for easier organiation and testing. Time to test commit
 
 ---
 
