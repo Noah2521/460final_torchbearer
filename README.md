@@ -37,6 +37,9 @@
 |---|---|
 | _node type_ | _one-line reason_ |
 | _node type_ | _one-line reason_ |
+- Start Node S: Each fuel value is determined from the distance from this node S.
+- Relic Nodes: Fuel values are updated during edge relaxation from between other relic nodes and the start node.
+- Ending Node T: Every node cahins into a path leading to this ending node T.
 
 ### Part 2b: Distance Storage
 
@@ -44,11 +47,11 @@
 
 | Property | Your answer |
 |---|---|
-| Data structure name | |
-| What the keys represent | |
-| What the values represent | |
-| Lookup time complexity | |
-| Why O(1) lookup is possible | |
+| Data structure name | fuelCosts |
+| What the keys represent | The current node|
+| What the values represent | The fuel costs to reach said node from the start node|
+| Lookup time complexity | O(V+E * (log(V)))|
+| Why O(1) lookup is possible | Graph size of 1 |
 
 ### Part 2c: Precomputation Complexity
 
