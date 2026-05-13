@@ -1,7 +1,7 @@
 # The Torchbearer
 
-**Student Name:** ___________________________
-**Student ID:** ___________________________
+**Student Name:** Noah Thao
+**Student ID:** 828067299
 **Course:** CS 460 – Algorithms | Spring 2026
 
 > This README is your project documentation. Write it the way a developer would document
@@ -73,29 +73,29 @@
 > Do not copy the invariant text from the spec.
 
 - **For nodes already finalized (in S):**
-  - Dijkstra's wil always choose the least cost edge first and it was assumed
+  - Nodes in S have found the shortest possible path from the start node to itself.
 
 - **For nodes not yet finalized (not in S):**
-  _Your answer here._
+  - Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.
 
 ### Part 3b: Why Each Phase Holds
 
 > One to two bullets per phase. Maintenance must mention nonnegative edge weights.
 
 - **Initialization : why the invariant holds before iteration 1:**
-  _Your answer here._
+  - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet.
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
-  _Your answer here._
+  - Since no negative edge values exist, the possiblity for negative cycles and lower cost paths through multiple iterations is not possible.
 
 - **Termination : what the invariant guarantees when the algorithm ends:**
-  _Your answer here._
+  - When the algorithm ends, all nodes will be in S and contain the lowest possible cost paths possible from the start node, though the relics nodes, and to the end node.
 
 ### Part 3c: Why This Matters for the Route Planner
 
 > One sentence connecting correct distances to correct routing decisions.
 
-_Your answer here._
+- By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
 
 ---
 
@@ -188,3 +188,4 @@ _Your answer here._
 to a seperate .py file and running it with an example graph from the test section of torcherbearer.py (in my case, graph_1 was used for testing).
 - Youtube.com: Dijkstra's Algorithm in 3 minutes (Michael Sambol), Dijkstras Shortest Path Algorithm Explained | With Example | Graph Theory (FelixTechTips). Also just used to help
 with understanding Dijkstra's conceptually. 
+- GeekForGeeks.org: Multiline String in Python. Literally just used so help format strings of parts 1 and 3 in torchbearer.py.

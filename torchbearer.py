@@ -34,7 +34,15 @@ def explain_problem():
 
     TODO
     """    
-    explanation = "The algorithm cannot be solved as a single shortest-path since certain nodes in the graph must be explored with the shortest path. \n After all inter-location costs are known, the edges forming the least cost path from the start node need to be chosen. \n In order to find the least cost poaths to specific nodes efficiently, an edge relaxation method would function better."
+    explanation = """
+    - **Why a single shortest-path run from S is not enough:** \n
+    - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers. \n
+
+    - **What decision remains after all inter-location costs are known:** \n
+    - The lowest cost path between two relics is chosen first. \n
+
+    - **Why this requires a search over orders (one sentence):** \n
+    - Every order combination provides a different cost, thus every order must be tested to find the minimum.\n""" 
 
     
     return explanation
@@ -163,7 +171,26 @@ def dijkstra_invariant_check():
 
     TODO
     """
-    return "TODO"
+    explanation = """
+    Part 3a \n
+    For nodes already finalized (in S): Nodes in S have found the shortest possible path from the start node to itself. \n 
+    For nodes not yet finalized (not in S): Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.\n
+    
+    Part 3b \n
+    - **Initialization : why the invariant holds before iteration 1:**
+    - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet. \n
+
+    - **Maintenance : why finalizing the min-dist node is always correct:**
+    - Since no negative edge values exist, the possiblity for negative cycles and lower cost paths through multiple iterations is not possible. \n
+
+    - **Termination : what the invariant guarantees when the algorithm ends:**
+    - When the algorithm ends, all nodes will be in S and contain the lowest possible cost paths possible from the start node, though the relics nodes, and to the end node. \n
+
+    Part 3c \n
+    - By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
+    """
+    
+    return explanation
 
 
 # =============================================================================

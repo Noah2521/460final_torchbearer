@@ -38,6 +38,14 @@ Realized I incorrectly interpreted and answered section 1 after implementing and
 
 ---
 
+---
+
+## Entry 4 – [5/13/2026]: Fixed part 1 in torchbearer and finished part 3
+Finished writing out part 3. Again, instructions are very clean and minimal so I personally had bit of a hard time analyzing the question. Got it down eventually though.
+Also restructured some explanation strings for parts 1 and 3 in torchbearer.py for visual clarity.
+
+---
+
 ## Entry 4 – [Date]: Post-Implementation Reflection
 
 > Required. Written after your implementation is complete. Describe what you would
@@ -53,9 +61,9 @@ _Your entry here._
 
 | Part | Estimated Hours |
 |---|---|
-| Part 1: Problem Analysis | |
-| Part 2: Precomputation Design | |
-| Part 3: Algorithm Correctness | |
+| Part 1: Problem Analysis | 2 hours |
+| Part 2: Precomputation Design | 2 hours |
+| Part 3: Algorithm Correctness | 1 hour |
 | Part 4: Search Design | |
 | Part 5: State and Search Space | |
 | Part 6: Pruning | |
