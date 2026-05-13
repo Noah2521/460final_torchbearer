@@ -35,11 +35,9 @@
 
 | Source Node Type | Why it is a source |
 |---|---|
-| _node type_ | _one-line reason_ |
-| _node type_ | _one-line reason_ |
-- Start Node S: Each fuel value is determined from the distance from this node S.
-- Relic Nodes: Fuel values are updated during edge relaxation from between other relic nodes and the start node.
-- Ending Node T: Every node cahins into a path leading to this ending node T.
+| Start Node S | Each fuel value is determined from the distance from this node S. |
+| Relic Nodes | Fuel values are updated during edge relaxation between other relic nodes and the start node. |
+| Ending Node T | Every node chains together to create a path leading to this ending node T. |
 
 ### Part 2b: Distance Storage
 
@@ -48,19 +46,19 @@
 | Property | Your answer |
 |---|---|
 | Data structure name | fuelCosts |
-| What the keys represent | The current node|
-| What the values represent | The fuel costs to reach said node from the start node|
-| Lookup time complexity | O(V+E * (log(V)))|
-| Why O(1) lookup is possible | Graph size of 1 |
+| What the keys represent | Nodes, specifically relics |
+| What the values represent | Fuel costs to reach said node from the start node |
+| Lookup time complexity | O(1) |
+| Why O(1) lookup is possible | Graph already contains lowest cost path to use|
 
 ### Part 2c: Precomputation Complexity
 
 > State the total complexity and show the arithmetic. Two to three lines max.
 
-- **Number of Dijkstra runs:** _your answer_
-- **Cost per run:** _your answer_
-- **Total complexity:** _your answer_
-- **Justification (one line):** _your answer_
+- **Number of Dijkstra runs:** Dijkstra's is run once for every source node. So with R representing relic nodes, its R + the start node + the exit node = R + 2.
+- **Cost per run:** Each run will run Dijkstra's, which has a time complexity of O(V + E (log(V))). So each run costs O(V + E (log(V)))
+- **Total complexity:** O((R + 2) * (V+E)log(V))
+- **Justification (one line):** Total complexity is num of runs * Dijkstra's algorithm time complexity; can be formally represented as O((R)(V+E)log(V)) 
 
 ---
 
@@ -186,4 +184,7 @@ _Your answer here._
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- _Your references here._
+- GeeksForGeeks.org: Python Lists, Adjacency List in Python, Dijkstra's Algorithm. All articles used to help implement methods in part 2. Results were verified by copying each method
+to a seperate .py file and running it with an example graph from the test section of torcherbearer.py (in my case, graph_1 was used for testing).
+- Youtube.com: Dijkstra's Algorithm in 3 minutes (Michael Sambol), Dijkstras Shortest Path Algorithm Explained | With Example | Graph Theory (FelixTechTips). Also just used to help
+with understanding Dijkstra's conceptually. 

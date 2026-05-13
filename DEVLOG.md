@@ -20,12 +20,15 @@ up implementation. Also thinking of testing each method individually in a separa
 
 ---
 
-## Entry 2 – [Date]: [Short description]
+## Entry 2 – [5/12/2026]: Finished up part 2
 
 > Required. At least one entry must describe a bug, wrong assumption, or design change
 > you encountered. Describe what went wrong and how you resolved it.
 
-_Your entry here._
+Implemented part 2. Ran into issues when implementing Dijkstra's initially, mostly in regards to syntax for accessing elements in the
+adjacency list. Read some articles and watched some youtube videos to see how they worked. Also got stumped for a second with the precompute method, 
+figured it out by looking over the parameters for a bit. Mainly testing everything on a different file test.py and using example graphs from torchbearer.py as input. 
+Also just realized I accidentally committed test.py and assignment.md to the repo; gonna remove before submission.
 
 ---
 

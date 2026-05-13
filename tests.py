@@ -43,6 +43,63 @@ def run_dijkstra(graph, source):
 
     return fuelCosts
 
+def select_sources(spawn, relics, exit_node):
+    """
+    Parameters
+    ----------
+    spawn : node
+    relics : list[node]
+    exit_node : node
+
+    Returns
+    -------
+    list[node]
+        No duplicates. Order does not matter.
+
+    TODO
+    """
+    #Create list and add spawn element
+    sourceList = []
+    sourceList.append(spawn)
+
+    #Fill list full of relics, ignore duplicate nodes
+    for relic in relics:
+        if relic in sourceList:
+            continue
+        sourceList.append(relic)
+
+    #Add ending node and return list of sources
+    sourceList.append(exit_node)
+
+    return sourceList
+
+def precompute_distances(graph, spawn, relics, exit_node):
+    """
+    Parameters
+    ----------
+    graph : dict[node, list[tuple[node, int]]]
+    spawn : node
+    relics : list[node]
+    exit_node : node
+
+    Returns
+    -------
+    dict[node, dict[node, float]]
+        Nested structure supporting dist_table[u][v] lookups
+        for every source u your design requires.
+
+    TODO
+    """
+    totalFuelCost = {}
+    sourceList = select_sources(spawn,relics,exit_node)
+
+    for node in sourceList:
+        totalFuelCost[node] = run_dijkstra(graph, node)
+
+    return totalFuelCost
+
+
+
 def main():
     graph = {
         'S': [('B', 1), ('C', 2), ('D', 2)],
@@ -51,7 +108,7 @@ def main():
         'D': [('B', 1), ('C', 1)],
         'T': []
     }
-
-    print(run_dijkstra(graph, 'S'))
+    relics = ['B', 'C', 'D']
+    print(precompute_distances(graph, 'S', relics, 'T'))
 
 main()

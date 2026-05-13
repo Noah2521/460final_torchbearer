@@ -32,6 +32,7 @@ def explain_problem():
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
 
+    TODO
     """    
     explanation = "The algorithm cannot be solved as a single shortest-path since certain nodes in the graph must be explored with the shortest path. \n After all inter-location costs are known, the edges forming the least cost path from the start node need to be chosen. \n In order to find the least cost poaths to specific nodes efficiently, an edge relaxation method would function better."
 
@@ -98,7 +99,7 @@ def run_dijkstra(graph, source):
     fuelCosts[source] = 0 
     heapq.heappush(prioQueue,(0, source))
 
-    #Dijkstra's
+    #Dijkstra's Algorithm
     while prioQueue:
 
         #Pop the current node
@@ -109,7 +110,7 @@ def run_dijkstra(graph, source):
             continue
         
         #For every edge for each node, if the total path weight is less than the recorded weight, set the new cost for the path 
-        #and add the path to the priority queue.
+        #and add the node with its updated fuel cost the priority queue.
         for edge, weight in graph[curr]:
             if fuelCosts[curr] + weight < fuelCosts[edge]:
                 fuelCosts[edge] = fuelCosts[curr] + weight
@@ -117,7 +118,8 @@ def run_dijkstra(graph, source):
 
     return fuelCosts
 
-
+#Combine all the methods to precompute the distances for all nodes. 
+#Took me a bit longer than it should have to figure out.
 def precompute_distances(graph, spawn, relics, exit_node):
     """
     Parameters
@@ -135,9 +137,16 @@ def precompute_distances(graph, spawn, relics, exit_node):
 
     TODO
     """
-    
+    #Nested adjacency list with fuel costs and source nodes. Creates list of sources.
+    allFuelCosts = {}
+    sourceList = select_sources(spawn, relics, exit_node)
 
-    pass
+    #Run dijkstra's on every source node in the source list.
+    for node in sourceList:
+        allFuelCosts[node] = run_dijkstra(graph, node)
+
+    return allFuelCosts
+
 
 
 # =============================================================================
