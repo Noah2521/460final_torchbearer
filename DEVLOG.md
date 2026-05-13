@@ -32,9 +32,9 @@ Also just realized I accidentally committed test.py and assignment.md to the rep
 
 ---
 
-## Entry 3 – [Date]: [Short description]
+## Entry 3 – [5/12/2026]: Reassessing the problem and editing part 1
 
-_Your entry here._
+Realized I incorrectly interpreted and answered section 1 after implementing and understanding section 2. I initially thought we were going to do edge selection and prove why path building was wrong but realized we're using both together for the solution after completing 2.3. Rewrote the answers in part 1.
 
 ---
 
