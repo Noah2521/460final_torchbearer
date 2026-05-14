@@ -35,14 +35,14 @@ def explain_problem():
     TODO
     """    
     explanation = """
-    - **Why a single shortest-path run from S is not enough:** \n
-    - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers. \n
+    - **Why a single shortest-path run from S is not enough:** 
+    - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers. 
 
-    - **What decision remains after all inter-location costs are known:** \n
-    - The lowest cost path between two relics is chosen first. \n
+    - **What decision remains after all inter-location costs are known:** 
+    - The lowest cost path between two relics is chosen first. 
 
-    - **Why this requires a search over orders (one sentence):** \n
-    - Every order combination provides a different cost, thus every order must be tested to find the minimum.\n""" 
+    - **Why this requires a search over orders (one sentence):** 
+    - Every order combination provides a different cost, thus every order must be tested to find the minimum.""" 
 
     
     return explanation
@@ -172,21 +172,21 @@ def dijkstra_invariant_check():
     TODO
     """
     explanation = """
-    Part 3a \n
-    For nodes already finalized (in S): Nodes in S have found the shortest possible path from the start node to itself. \n 
-    For nodes not yet finalized (not in S): Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.\n
+    Part 3a 
+    For nodes already finalized (in S): Nodes in S have found the shortest possible path from the start node to itself. 
+    For nodes not yet finalized (not in S): Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.
     
-    Part 3b \n
+    Part 3b 
     - **Initialization : why the invariant holds before iteration 1:**
-    - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet. \n
+    - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet. 
 
     - **Maintenance : why finalizing the min-dist node is always correct:**
-    - Since no negative edge values exist, the possiblity for negative cycles and lower cost paths through multiple iterations is not possible. \n
+    - Since no negative edge values exist, the possiblity for negative cycles and lower cost paths through multiple iterations is not possible. 
 
     - **Termination : what the invariant guarantees when the algorithm ends:**
-    - When the algorithm ends, all nodes will be in S and contain the lowest possible cost paths possible from the start node, though the relics nodes, and to the end node. \n
+    - When the algorithm ends, all nodes will be in S and contain the lowest possible cost paths possible from the start node, though the relics nodes, and to the end node. 
 
-    Part 3c \n
+    Part 3c 
     - By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
     """
     
@@ -207,7 +207,37 @@ def explain_search():
 
     TODO
     """
-    return "TODO"
+    explanation = """
+- **The failure mode:** 
+  - A Greedy Algorithm would fail since it would pick locally optimal paths to relics but fail to form a globally optimal path.
+
+- **Counter-example setup:** 
+  - Say we're working with the following graph:
+    {
+      S : [('R2', 1), ('R1', 4)]
+      R1 : [('T', 2)]
+      R2 : [('R3', 6)]
+      R3 : [('V', 4)]
+      R4 : []
+      V : [('R4', 9)]
+      T : [('R3', 3)]
+    }
+  - The Greedy Algorithm (G) chooses the closest lowest-cost relic chamber first
+  - The Optimal ALgorithm (O) choose the lowest cost path first
+- **What greedy picks:**
+  - G will start from S and choose R2 to break the stalement of closeness. From there, the path will be R2 -> R3 -> V -> R4, following closest relic
+  - G will reach a dead end at R4 and trace back to S, choose S->R1 and finish at T with R1 -> T.
+- **What optimal picks:**
+  - O will pick the lowest cost edges first, so S -> R2, then R1 -> T, then T -> R3, R3 -> V, S -> R1, and V -> R4 to finish.
+- **Why greedy loses:** 
+  - In order of path building, G results in fuel costs of 1 + 6 + 4 + 9 + 4 + 2 = 26 while O results in 1 + 2 + 3 + 4 + 9 + 4 = 23
+  - G chose R2 first since it was the closest, cheapest edge. Though R2 was cheaper than R1, R1's path lead to an overall cheaper path cost compared to R2.
+
+### What the Algorithm Must Explore
+- The algorithm must explore the graph in order of lowest cost between relic chambers first in order to produce a globally optimal output.
+    """
+
+    return explanation
 
 
 # =============================================================================

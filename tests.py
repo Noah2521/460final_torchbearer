@@ -1,114 +1,50 @@
 import heapq
 
-def run_dijkstra(graph, source):
+def explain_search():
     """
-    Parameters
-    ----------
-    graph : dict[node, list[tuple[node, int]]]
-        graph[u] = [(v, cost), ...]. All costs are nonnegative integers.
-    source : node
-
     Returns
     -------
-    dict[node, float]
-        Minimum cost from source to every node in graph.
-        Unreachable nodes map to float('inf').
+    str
+        Your Part 4 README answers, written as a string.
+        Must match what you wrote in README Part 4.
 
     TODO
     """
-    #Priority queue of Dijkstra's and graph key
-    prioQueue = []
-    fuelCosts = {node : float('inf') for node in graph}
+    explanation = """
+- **The failure mode:** 
+  - A Greedy Algorithm would fail since it would pick locally optimal paths to relics but fail to form a globally optimal path.
 
-    #Set source distance to 0 and push into prio queue
-    fuelCosts[source] = 0 
-    heapq.heappush(prioQueue,(0, source))
+- **Counter-example setup:** 
+  - Say we're working with the following graph:
+    {
+      S : [('R2', 1), ('R1', 4)]
+      R1 : [('T', 2)]
+      R2 : [('R3', 6)]
+      R3 : [('V', 4)]
+      R4 : []
+      V : [('R4', 9)]
+      T : [('R3', 3)]
+    }
+  - The Greedy Algorithm (G) chooses the closest lowest-cost relic chamber first
+  - The Optimal ALgorithm (O) choose the lowest cost path first
+- **What greedy picks:**
+  - G will start from S and choose R2 to break the stalement of closeness. From there, the path will be R2 -> R3 -> V -> R4, following closest relic
+  - G will reach a dead end at R4 and trace back to S, choose S->R1 and finish at T with R1 -> T.
+- **What optimal picks:**
+  - O will pick the lowest cost edges first, so S -> R2, then R1 -> T, then T -> R3, R3 -> V, S -> R1, and V -> R4 to finish.
+- **Why greedy loses:** 
+  - In order of path building, G results in fuel costs of 1 + 6 + 4 + 9 + 4 + 2 = 26 while O results in 1 + 2 + 3 + 4 + 9 + 4 = 23
+  - G chose R2 first since it was the closest, cheapest edge. Though R2 was cheaper than R1, R1's path lead to an overall cheaper path cost compared to R2.
 
-    #Dijkstra's
-    while prioQueue:
-
-        #Pop the current node
-        dist, curr = heapq.heappop(prioQueue)
-
-        #If the current edge weight is greater than the node's key value, skip th search
-        if dist > fuelCosts[curr]:
-            continue
-        
-        #For every edge for each node, if the total path weight is less than the recorded weight, set the new cost for the path 
-        #and add the path to the priority queue.
-        for edge, weight in graph[curr]:
-            if fuelCosts[curr] + weight < fuelCosts[edge]:
-                fuelCosts[edge] = fuelCosts[curr] + weight
-                heapq.heappush(prioQueue, (fuelCosts[edge], edge))
-
-    return fuelCosts
-
-def select_sources(spawn, relics, exit_node):
+### What the Algorithm Must Explore
+- The algorithm must explore the graph in order of lowest cost between relic chambers first in order to produce a globally optimal output.
     """
-    Parameters
-    ----------
-    spawn : node
-    relics : list[node]
-    exit_node : node
 
-    Returns
-    -------
-    list[node]
-        No duplicates. Order does not matter.
-
-    TODO
-    """
-    #Create list and add spawn element
-    sourceList = []
-    sourceList.append(spawn)
-
-    #Fill list full of relics, ignore duplicate nodes
-    for relic in relics:
-        if relic in sourceList:
-            continue
-        sourceList.append(relic)
-
-    #Add ending node and return list of sources
-    sourceList.append(exit_node)
-
-    return sourceList
-
-def precompute_distances(graph, spawn, relics, exit_node):
-    """
-    Parameters
-    ----------
-    graph : dict[node, list[tuple[node, int]]]
-    spawn : node
-    relics : list[node]
-    exit_node : node
-
-    Returns
-    -------
-    dict[node, dict[node, float]]
-        Nested structure supporting dist_table[u][v] lookups
-        for every source u your design requires.
-
-    TODO
-    """
-    totalFuelCost = {}
-    sourceList = select_sources(spawn,relics,exit_node)
-
-    for node in sourceList:
-        totalFuelCost[node] = run_dijkstra(graph, node)
-
-    return totalFuelCost
+    return explanation
 
 
 
 def main():
-    graph = {
-        'S': [('B', 1), ('C', 2), ('D', 2)],
-        'B': [('D', 1), ('T', 1)],
-        'C': [('B', 1), ('T', 1)],
-        'D': [('B', 1), ('C', 1)],
-        'T': []
-    }
-    relics = ['B', 'C', 'D']
-    print(precompute_distances(graph, 'S', relics, 'T'))
+    print(explain_search())
 
 main()

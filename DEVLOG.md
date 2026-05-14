@@ -46,7 +46,15 @@ Also restructured some explanation strings for parts 1 and 3 in torchbearer.py f
 
 ---
 
-## Entry 4 – [Date]: Post-Implementation Reflection
+---
+
+## Entry 5 – [5/13/2026]: Finished up part 4
+Finished writing part 4. Took me a bit to figure what specifically a failure mode is and how to word it properly but was able to figure it out after going over an article. 
+Every other section of part 4 was fine; experience from practice midterm 2 and the real midterm 2 helped with forming the rest of the proof.
+
+---
+
+## Entry 6 – [Date]: Post-Implementation Reflection
 
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.
