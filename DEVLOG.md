@@ -55,6 +55,10 @@ All finished I believe. Forgot to update written answers from README.md to torch
 
 ---
 
+## Entry 8 – [5/14/2026]: Final Touches
+Read over assignment.md and my answers to README.md and made appropriate changes to README.md answers. Mostly went through and reworded my answers to make them more definite rather than vague. Synched the answers to corresponding torcherbearer.py strings when appropriate.
+---
+
 ## Final Entry – [5/14/2026]: Time Estimate
 
 | Part | Estimated Hours |

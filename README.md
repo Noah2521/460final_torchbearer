@@ -9,7 +9,7 @@
 ## Part 1: Problem Analysis
 
 - **Why a single shortest-path run from S is not enough:**
-  - SSSP run from S cannot account for globally optimal solutions, ie. worst local cost leading to a overall best cost.
+  - SSSP run from S cannot account for globally optimal solutions, ie. it cannot make a worst local cost decision that leads to an overall best cost. 
 
 - **What decision remains after all inter-location costs are known:**
   - The lowest cost global path needs to be formed.
@@ -53,15 +53,15 @@
 ### Part 3a: What the Invariant Means
 
 - **For nodes already finalized (in S):**
-  - Nodes in S have found the shortest possible path from the start node to itself.
+  - Nodes in S have found the shortest possible path from the start node x to itself.
 
 - **For nodes not yet finalized (not in S):**
-  - Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.
+  - Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node x.
 
 ### Part 3b: Why Each Phase Holds
 
 - **Initialization : why the invariant holds before iteration 1:**
-  - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet.
+  - All nodes are unexplored, so their true known distance is a placeholder value, in this case, INF. Invariant remains true since there's not true distance to record in an unexplored graph.
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
   - Since no negative edge values exist, the possiblity for negative cycles and lower cost paths through multiple iterations is not possible.
