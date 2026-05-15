@@ -113,7 +113,7 @@ def run_dijkstra(graph, source):
         #Pop the current node
         dist, curr = heapq.heappop(prioQueue)
 
-        #If the current edge weight is greater than the node's key value, skip th search
+        #If the current edge weight is greater than the node's key value, skip the search
         if dist > fuelCosts[curr]:
             continue
         
@@ -215,12 +215,12 @@ def explain_search():
   - Say we're working with the following graph:
     {
       S : [('R2', 1), ('R1', 4)]
-      R1 : [('T', 2)]
-      R2 : [('R3', 6)]
+      R1 : [('R2', 1)]
+      R2 : [('R3', 6), ('T', 1)]
       R3 : [('V', 4)]
       R4 : []
       V : [('R4', 9)]
-      T : [('R3', 3)]
+      T : [('R3', 1)]
     }
   - The Greedy Algorithm (G) chooses the closest lowest-cost relic chamber first
   - The Optimal ALgorithm (O) choose the lowest cost path first
@@ -230,7 +230,7 @@ def explain_search():
 - **What optimal picks:**
   - O will pick the lowest cost edges first, so S -> R2, then R1 -> T, then T -> R3, R3 -> V, S -> R1, and V -> R4 to finish.
 - **Why greedy loses:** 
-  - In order of path building, G results in fuel costs of 1 + 6 + 4 + 9 + 4 + 2 = 26 while O results in 1 + 2 + 3 + 4 + 9 + 4 = 23
+  - In order of path building, G results in fuel costs of 1 + 6 + 4 + 9 + 4 + 2 = 26 while O results in 1 + 1 + 1 + 4 + 4 + 9 = 20
   - G chose R2 first since it was the closest, cheapest edge. Though R2 was cheaper than R1, R1's path lead to an overall cheaper path cost compared to R2.
 
 ### What the Algorithm Must Explore
@@ -264,7 +264,31 @@ def find_optimal_route(dist_table, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    #Final route containing total fuel cost and order of nodes explored.
+    optimalRoute = [float('inf'), []]
+    
+    #Used to track remaining relics to track.
+    visitedRelics = []
+    relicsRemaning = set(relics)
+    currentFuelCost = 0.0
+
+    #Case for an empty relic list.
+    if not relics:
+        fuelCost = dist_table.get(spawn, {}).get(exit_node, float('inf'))
+        #Case for cost from S to T, return cost between two.
+        if fuelCost < float('inf'):
+            return (fuelCost, []) 
+        #No path from S to T exists
+        else:
+            return (float('inf'), [])
+
+    _explore(dist_table, spawn, relicsRemaning, visitedRelics, currentFuelCost, exit_node, optimalRoute)
+
+    #Return the route if it was found, else return and empty tuple.
+    if (optimalRoute[0] < float('inf')):
+        return (optimalRoute[0], optimalRoute[1])
+    else:
+        return (float('inf'), [])
 
 
 def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
@@ -296,7 +320,40 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     explaining why it is safe (cannot skip the optimal solution).
     This comment is graded.
     """
-    pass
+
+    #The pruning case. We stop exploring for the current order if our current path fuel costs is higher than or equal to the recorded best cost
+    #The pruning condition safe because we're working with guaranteed nonnegative edges, so there's no cycles or edges that could result in lower paths over iterations.
+    if cost_so_far >= best[0]:
+        return 
+    
+    #Base case. All relics have been explored.
+    if not relics_remaining:
+        #If exit node T can be reached and ended at, update fuelcost if path is lower than best 
+        totalFuel = cost_so_far + dist_table.get(current_loc, {}).get(exit_node, float('inf'))
+        #if current path's fuel cost is better than recorded, write current path into history
+        if totalFuel < best[0]:
+            best[0] = totalFuel
+            best[1] = list(relics_visited_order) 
+        return
+    
+    #Recursive case + actual search. Move through each relic and test every combination through recursion.
+    for relic in relics_remaining:
+        #Get cost edge between current node and next relic
+        fuelCost = dist_table.get(current_loc, {}).get(relic, float('inf'))
+        #Unreachable node
+        if fuelCost == float('inf'):
+            continue
+
+        #Add next relic to explore queue and recurse
+        relics_remaining.remove(relic)
+        relics_visited_order.append(relic)
+
+        #Explore next node, adding the cost to total path cost
+        _explore(dist_table, relic, relics_remaining, relics_visited_order, cost_so_far + fuelCost, exit_node, best)
+
+        #Backtrack to try next relic order
+        relics_remaining.add(relic)
+        relics_visited_order.pop()
 
 
 # =============================================================================
@@ -320,7 +377,10 @@ def solve(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    #Pretty simple. Formats the graph into a dictionary and then runs optimal route algorithm to find the min fuel cost and relic order.
+    dist_table = precompute_distances(graph, spawn, relics, exit_node)
+
+    return find_optimal_route(dist_table, spawn, relics, exit_node)
 
 
 # =============================================================================

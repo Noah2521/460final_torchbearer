@@ -20,7 +20,7 @@
   - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers.
 
 - **What decision remains after all inter-location costs are known:**
-  - The lowest cost path between two relics is chosen first.
+  - The lowest cost global path needs to be formed.
 
 - **Why this requires a search over orders (one sentence):**
   - Every order combination provides a different cost, thus every order must be tested to find the minimum.
@@ -111,30 +111,26 @@
 - **Counter-example setup:** 
   - Say we're working with the following graph:
     {
-      S : [('R2', 1), ('R1', 4)]
-      R1 : [('T', 2)]
-      R2 : [('R3', 6)]
-      R3 : [('V', 4)]
-      R4 : []
-      V : [('R4', 9)]
-      T : [('R3', 3)]
+      'S' : [('R1', 1), ('R2', 3)],
+      'R1' : [('V', 2), ('T', 2)],
+      'R2' : [('R1', 1), ('T', 4)],
+      'V' : [('R2', 2)],
+      'T' : []
     }
-  - The Greedy Algorithm (G) chooses the closest lowest-cost relic chamber first
-  - The Optimal ALgorithm (O) choose the lowest cost path first
+  - The Greedy Algorithm (G) chooses the lowest-cost relic chamber first
+  - The Optimal Algorithm (O) chooses the globally lowest-cost path.
 - **What greedy picks:**
-  - G will start from S and choose R2 to break the stalement of closeness. From there, the path will be R2 -> R3 -> V -> R4, following closest relic.
-  - G will reach a dead end at R4 and trace back to S, choose S->R1 and finish at T with R1 -> T.
+  - G will start from S and choose R1. Then it will go R1->V->R2->T. This results in a total cost of 1 + 2 + 2 + 4 = 9
 - **What optimal picks:**
-  - O will pick the lowest cost edges first, so S -> R2, then R1 -> T, then T -> R3, R3 -> V, S -> R1, and V -> R4 to finish.
+  - O will start at S and path to R2 then follow path R2->R1->T, which results in a total cost of 3 + 2 + 2 = 7. 
 - **Why greedy loses:** 
-  - In order of path building, G results in fuel costs of 1 + 6 + 4 + 9 + 4 + 2 = 26 while O results in 1 + 2 + 3 + 4 + 9 + 4 = 23
-  - G chose R2 first since it was the closest, cheapest edge. Though R2 was cheaper than R1, R1's path lead to an overall cheaper path cost compared to R2.
+  - G chose R1 first since it was the cheapest immediate edge. Though R1 was cheaper than R2, R2's path lead to an overall cheaper path cost compared to R1.
 
 ### What the Algorithm Must Explore
 
 > One bullet. Must use the word "order."
 
-- The algorithm must explore the graph in order of lowest cost between relic chambers first in order to produce a globally optimal output.
+- The algorithm must explore different orders of node paths to find the globally optimal path to travel.
 
 ---
 
@@ -147,9 +143,9 @@
 
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | | | |
-| Relics already collected | | | |
-| Fuel cost so far | | | |
+| Current location | current_loc | string | tracks current node. starts with node S |
+| Relics already collected | visitedRelics | list | Contains explored relics, used for tracking and backtracking|
+| Fuel cost so far | currentFuelCost | float | Used to track the total fuel cost of current path |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -157,18 +153,18 @@
 
 | Property | Your answer |
 |---|---|
-| Data structure chosen | |
-| Operation: check if relic already collected | Time complexity: |
-| Operation: mark a relic as collected | Time complexity: |
-| Operation: unmark a relic (backtrack) | Time complexity: |
-| Why this structure fits | |
+| Data structure chosen | list named visitedRelics |
+| Operation: check if relic already collected | Time complexity: O(R) where R is number of relics collected|
+| Operation: mark a relic as collected | Time complexity: O(1), append the relic to visited list|
+| Operation: unmark a relic (backtrack) | Time complexity: O(1), remove relic from the visited and add to separate unvisited list relicsRemaining.|
+| Why this structure fits | Relics are added to visitedRelics and returned when path fails or is found, allowing for new path orders to be attempted.|
 
 ### Part 5c: Worst-Case Search Space
 
 > Two bullets.
 
-- **Worst-case number of orders considered:** _Your answer (in terms of k)._
-- **Why:** _One-line justification._
+- **Worst-case number of orders considered:** O(K!) where K is the number of relics
+- **Why:** Case where each node has a new lower cost path so every path combination needs to be explored (ie. no pruning occurs).
 
 ---
 
@@ -178,33 +174,35 @@
 
 > Three bullets.
 
-- **What is tracked:** _Your answer here._
-- **When it is used:** _Your answer here._
-- **What it allows the algorithm to skip:** _Your answer here._
+- **What is tracked:** total cost of edges of currently collected nodes and the recorded best cost.
+- **When it is used:** The start of the recursive method _explore()
+- **What it allows the algorithm to skip:** If the cost of the current order exceeds the recorded best cost, then we return and skip that path order.
 
 ### Part 6b: Lower Bound Estimation
 
 > Three bullets.
 
-- **What information is available at the current state:** _Your answer here._
-- **What the lower bound accounts for:** _Your answer here._
-- **Why it never overestimates:** _Your answer here._
+- **What information is available at the current state:** Explored/unexplored nodes, best recorded cost, current path cost, and distances between source nodes.
+- **What the lower bound accounts for:** The lower bound still needs to compare every path combination to find the best cost path.
+- **Why it never overestimates:** As stated above, every path combination is still tested against the best found case, so no lower cost paths are disregarded.
 
 ### Part 6c: Pruning Correctness
 
 > One to two bullets. Explain why pruning is safe.
 
-- _Your answer here._
-
+- The pruning condition safe because we're working with guaranteed nonnegative edges, so there's no cycles or edges that could result in lower paths over iterations.
+- Exploration ends for the current order if the current path fuel costs is higher than or equal to the recorded best cost
+  
 ---
 
 ## References
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- GeeksForGeeks.org: Python Lists, Adjacency List in Python, Dijkstra's Algorithm. All articles used to help implement methods in part 2. Results were verified by copying each method
-to a seperate .py file and running it with an example graph from the test section of torcherbearer.py (in my case, graph_1 was used for testing).
+- GeeksForGeeks.org: Python Lists, Adjacency List in Python, Dijkstra's Algorithm. All articles used to help implement methods in part 2 and in parts 5 and 6. Results were verified by copying each method to a separate .py file and running it with an example graph from the test section of torcherbearer.py (in my case, graph_1 was used for testing for part 2).
 - Youtube.com: Dijkstra's Algorithm in 3 minutes (Michael Sambol), Dijkstras Shortest Path Algorithm Explained | With Example | Graph Theory (FelixTechTips). Also just used to help
 with understanding Dijkstra's conceptually. 
 - GeekForGeeks.org: Multiline String in Python. Literally just used so help format strings of parts 1 and 3 in torchbearer.py.
 - ASQ.org: FMEA. Used this article in part 4 briefly to get a better definition of a failure mode.
+- GeeksForGeeks.org: Pruning Decision Trees. Used to help with pruning in part 5, mainly conceptually. Tested methods in separate test.py file using example graphs.
+- Referenced my Assignment 7 Graph Problems code to help solve parts 5 and 6 in implmenetation for backtracking. Again, tested methods in a separate test.py file using example graphs in tests section.
