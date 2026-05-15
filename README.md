@@ -9,7 +9,7 @@
 ## Part 1: Problem Analysis
 
 - **Why a single shortest-path run from S is not enough:**
-  - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers.
+  - SSSP run from S cannot account for globally optimal solutions, ie. worst local cost leading to a overall best cost.
 
 - **What decision remains after all inter-location costs are known:**
   - The lowest cost global path needs to be formed.
@@ -25,8 +25,8 @@
 
 | Source Node Type | Why it is a source |
 |---|---|
-| Start Node S | Each fuel value is determined from the distance from this node S. |
-| Relic Nodes | Fuel values are updated during edge relaxation between other relic nodes and the start node. |
+| Start Node S | Each recorded fuel value is determined from the distance from this node S. |
+| Relic Nodes | Least cost between relics needs to be found to form overall lowest cost path|
 | Ending Node T | Every node chains together to create a path leading to this ending node T. |
 
 ### Part 2b: Distance Storage
@@ -34,17 +34,17 @@
 | Property | Your answer |
 |---|---|
 | Data structure name | fuelCosts |
-| What the keys represent | Nodes, specifically relics |
+| What the keys represent | Nodes in Graph |
 | What the values represent | Fuel costs to reach said node from the start node |
 | Lookup time complexity | O(1) |
-| Why O(1) lookup is possible | Graph already contains lowest cost path to use|
+| Why O(1) lookup is possible | Graph already has calculated distances |
 
 ### Part 2c: Precomputation Complexity
 
 - **Number of Dijkstra runs:** Dijkstra's is run once for every source node. So with R representing relic nodes, its R + the start node + the exit node = R + 2.
 - **Cost per run:** Each run will run Dijkstra's, which has a time complexity of O(V + E (log(V))). So each run costs O(V + E (log(V)))
-- **Total complexity:** O((R + 2) * (V+E)log(V))
-- **Justification (one line):** Total complexity is num of runs * Dijkstra's algorithm time complexity; can be formally represented as O((R)(V+E)log(V)) 
+- **Total complexity:** O((R + 2) * (V+E)log(V)) = O((R)(V+E)log(V)) 
+- **Justification (one line):** Total complexity is num of runs * Dijkstra's algorithm time complexity.
 
 ---
 
@@ -71,7 +71,7 @@
 
 ### Part 3c: Why This Matters for the Route Planner
 
-- By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
+- By calculating the shortest distances between relic nodes, the start node, and end node, we can start selecting edges to help form the overall lowest cost path.
 
 ---
 
@@ -112,23 +112,23 @@
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
 | Current location | current_loc | string | tracks current node. starts with node S |
-| Relics already collected | visitedRelics | list | Contains explored relics, used for tracking and backtracking|
-| Fuel cost so far | currentFuelCost | float | Used to track the total fuel cost of current path |
+| Relics already collected | visitedRelics/relics_visited_order | list | Contains explored relics, used for tracking and backtracking|
+| Fuel cost so far | currentFuelCost/cost_so_far | float | Used to track the total fuel cost of current path |
 
 ### Part 5b: Data Structure for Visited Relics
 
 | Property | Your answer |
 |---|---|
-| Data structure chosen | list named visitedRelics |
+| Data structure chosen | list named visitedRelics/relics_visited_order |
 | Operation: check if relic already collected | Time complexity: O(R) where R is number of relics collected|
-| Operation: mark a relic as collected | Time complexity: O(1), append the relic to visited list|
+| Operation: mark a relic as collected | Time complexity: O(1), append the relic to visited list |
 | Operation: unmark a relic (backtrack) | Time complexity: O(1), remove relic from the visited and add to separate unvisited list relicsRemaining.|
 | Why this structure fits | Relics are added to visitedRelics and returned when path fails or is found, allowing for new path orders to be attempted.|
 
 ### Part 5c: Worst-Case Search Space
 
 - **Worst-case number of orders considered:** O(K!) where K is the number of relics
-- **Why:** Case where each node has a new lower cost path so every path combination needs to be explored (ie. no pruning occurs).
+- **Why:** Case where each node has a new lower cost/same cost path so every path combination needs to be explored (ie. no pruning occurs).
 
 ---
 
@@ -138,7 +138,7 @@
 
 - **What is tracked:** total cost of edges of currently collected nodes and the recorded best cost.
 - **When it is used:** The start of the recursive method _explore()
-- **What it allows the algorithm to skip:** If the cost of the current order exceeds the recorded best cost, then we return and skip that path order.
+- **What it allows the algorithm to skip:** If the cost of the current order is equal to or exceeds the recorded best cost, then we return and skip that path order.
 
 ### Part 6b: Lower Bound Estimation
 
@@ -148,8 +148,8 @@
 
 ### Part 6c: Pruning Correctness
 
-- The pruning condition safe because we're working with guaranteed nonnegative edges, so there's no cycles or edges that could result in lower paths over iterations.
-- Exploration ends for the current order if the current path fuel costs is higher than or equal to the recorded best cost
+- The pruning condition safe because we're working with guaranteed nonnegative edges, so costs in progress equal to the current best can only cost more and thus can be skipped.
+- We stop exploring for the current order if our current path fuel costs is higher than or equal to the recorded best cost
   
 ---
 
@@ -160,5 +160,5 @@
 with understanding Dijkstra's conceptually. 
 - GeekForGeeks.org: Multiline String in Python. Literally just used so help format strings of parts 1 and 3 in torchbearer.py.
 - ASQ.org: FMEA. Used this article in part 4 briefly to get a better definition of a failure mode.
-- GeeksForGeeks.org: Pruning Decision Trees. Used to help with pruning in part 5, mainly conceptually. Tested methods in separate test.py file using example graphs.
+- GeeksForGeeks.org: Pruning Decision Trees. Used to help with pruning in part 5, mainly conceptual help. Tested methods in separate test.py file using example graphs.
 - Referenced my Assignment 7 Graph Problems code to help solve parts 5 and 6 in implmenetation for backtracking. Again, tested methods in a separate test.py file using example graphs in tests section.

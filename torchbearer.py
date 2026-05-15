@@ -36,16 +36,14 @@ def explain_problem():
     """    
     explanation = """
 - **Why a single shortest-path run from S is not enough:**
-  - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers.
+  - SSSP run from S cannot account for globally optimal solutions, ie. worst local cost leading to a overall best cost.
 
 - **What decision remains after all inter-location costs are known:**
   - The lowest cost global path needs to be formed.
 
 - **Why this requires a search over orders (one sentence):**
   - Every order combination provides a different cost, thus every order must be tested to find the minimum.
-    """ 
-
-    
+"""
     return explanation
 
 
@@ -191,7 +189,7 @@ def dijkstra_invariant_check():
   - When the algorithm ends, all nodes will be in S and contain the lowest possible cost paths possible from the start node, though the relics nodes, and to the end node.
 
     Part 3c 
-- By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
+- By calculating the shortest distances between relic nodes, the start node, and end node, we can start selecting edges to help form the overall lowest cost path.
     """
     
     return explanation
@@ -322,7 +320,7 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     """
 
     #The pruning case. We stop exploring for the current order if our current path fuel costs is higher than or equal to the recorded best cost
-    #The pruning condition safe because we're working with guaranteed nonnegative edges, so there's no cycles or edges that could result in lower paths over iterations.
+    #The pruning condition safe because we're working with guaranteed nonnegative edges, so costs in progress equal to the current best can only cost more and thus can be skipped.
     if cost_so_far >= best[0]:
         return 
     
