@@ -1,30 +1,16 @@
 # Development Log – The Torchbearer
 
-**Student Name:** ___________________________
-**Student ID:** ___________________________
-
-> Instructions: Write at least four dated entries. Required entry types are marked below.
-> Two to five sentences per entry is sufficient. Write entries as you go, not all in one
-> sitting. Graders check that entries reflect genuine work across multiple sessions.
-> Delete all blockquotes before submitting.
-
+**Student Name:** Noah Thao
+**Student ID:** 828067299
 ---
 
-## Entry 1 – [5/11/2026]: Initial Plan
-
-> Required. Write this before writing any code. Describe your plan: what you will
-> implement first, what parts you expect to be difficult, and how you plan to test.
-
+## Entry 1 – [5/11/2026]: Initial Plan.
 The plan is probably just to go in order with each part in order. From what I went over, the hardest parts are going to be the actual implementation of Dijktra's and the MST bottom
 up implementation. Also thinking of testing each method individually in a separate .py file for easier organiation and testing. Time to test commit
 
 ---
 
 ## Entry 2 – [5/12/2026]: Finished up part 2
-
-> Required. At least one entry must describe a bug, wrong assumption, or design change
-> you encountered. Describe what went wrong and how you resolved it.
-
 Implemented part 2. Ran into issues when implementing Dijkstra's initially, mostly in regards to syntax for accessing elements in the
 adjacency list. Read some articles and watched some youtube videos to see how they worked. Also got stumped for a second with the precompute method, 
 figured it out by looking over the parameters for a bit. Mainly testing everything on a different file test.py and using example graphs from torchbearer.py as input. 
@@ -64,16 +50,12 @@ the N-Queens and Graph Coloring algorithm from assignment 7 helped me with the b
 
 ## Entry 7 – [5/14/2026]: Post-Implementation Reflection
 
-> Required. Written after your implementation is complete. Describe what you would
-> change or improve given more time.
 
-_Your entry here._
+All finished I believe. Forgot to update written answers from README.md to torchbearer.py so I went ahead and did that for parts 1, 3, and 4. I was gonna delete test.py and ASSIGNMENT.md since I didn't know if it follows the deliverables section but decided to leave them in just so my testing explanation somewhat makes sense. I think I could improve parts 5 and 6; certain Python methods and functions could likely be used to clean up number of variables and relic tracking methods. Visual clarity could also be improved.
 
 ---
 
-## Final Entry – [Date]: Time Estimate
-
-> Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
+## Final Entry – [5/14/2026]: Time Estimate
 
 | Part | Estimated Hours |
 |---|---|

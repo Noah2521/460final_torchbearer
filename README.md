@@ -4,17 +4,9 @@
 **Student ID:** 828067299
 **Course:** CS 460 – Algorithms | Spring 2026
 
-> This README is your project documentation. Write it the way a developer would document
-> their design decisions , bullet points, brief justifications, and concrete examples where
-> required. You are not writing an essay. You are explaining what you built and why you built
-> it that way. Delete all blockquotes like this one before submitting.
-
 ---
 
 ## Part 1: Problem Analysis
-
-> Document why this problem is not just a shortest-path problem. Three bullet points, one
-> per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
   - SSSP run from S only provides shortest paths to chamber nodes but doesn't provide shortest paths between chambers.
@@ -31,8 +23,6 @@
 
 ### Part 2a: Source Selection
 
-> List the source node types as a bullet list. For each, one-line reason.
-
 | Source Node Type | Why it is a source |
 |---|---|
 | Start Node S | Each fuel value is determined from the distance from this node S. |
@@ -40,8 +30,6 @@
 | Ending Node T | Every node chains together to create a path leading to this ending node T. |
 
 ### Part 2b: Distance Storage
-
-> Fill in the table. No prose required.
 
 | Property | Your answer |
 |---|---|
@@ -53,8 +41,6 @@
 
 ### Part 2c: Precomputation Complexity
 
-> State the total complexity and show the arithmetic. Two to three lines max.
-
 - **Number of Dijkstra runs:** Dijkstra's is run once for every source node. So with R representing relic nodes, its R + the start node + the exit node = R + 2.
 - **Cost per run:** Each run will run Dijkstra's, which has a time complexity of O(V + E (log(V))). So each run costs O(V + E (log(V)))
 - **Total complexity:** O((R + 2) * (V+E)log(V))
@@ -64,13 +50,7 @@
 
 ## Part 3: Algorithm Correctness
 
-> Document your understanding of why Dijkstra produces correct distances.
-> Bullet points and short sentences throughout. No paragraphs.
-
 ### Part 3a: What the Invariant Means
-
-> Two bullets: one for finalized nodes, one for non-finalized nodes.
-> Do not copy the invariant text from the spec.
 
 - **For nodes already finalized (in S):**
   - Nodes in S have found the shortest possible path from the start node to itself.
@@ -79,8 +59,6 @@
   - Nodes not in S have not found the least cost path and contain the current lowest cost path from the start node.
 
 ### Part 3b: Why Each Phase Holds
-
-> One to two bullets per phase. Maintenance must mention nonnegative edge weights.
 
 - **Initialization : why the invariant holds before iteration 1:**
   - All nodes are unexplored and contain inf for their values. Inf values for each node is appropriate since no paths have been explored yet.
@@ -93,8 +71,6 @@
 
 ### Part 3c: Why This Matters for the Route Planner
 
-> One sentence connecting correct distances to correct routing decisions.
-
 - By calculating the shortest distances between relic nodes, the start node, and end node, we are able to decide which edge to start with when building the path.
 
 ---
@@ -102,9 +78,6 @@
 ## Part 4: Search Design
 
 ### Why Greedy Fails
-
-> State the failure mode. Then give a concrete counter-example using specific node names
-> or costs (you may use the illustration example from the spec). Three to five bullets.
 
 - **The failure mode:** 
   - A Greedy Algorithm would fail for a situation like this since it would pick locally optimal paths to relics but fail to form a globally optimal path.
@@ -128,8 +101,6 @@
 
 ### What the Algorithm Must Explore
 
-> One bullet. Must use the word "order."
-
 - The algorithm must explore different orders of node paths to find the globally optimal path to travel.
 
 ---
@@ -138,9 +109,6 @@
 
 ### Part 5a: State Representation
 
-> Document the three components of your search state as a table.
-> Variable names here must match exactly what you use in torchbearer.py.
-
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
 | Current location | current_loc | string | tracks current node. starts with node S |
@@ -148,8 +116,6 @@
 | Fuel cost so far | currentFuelCost | float | Used to track the total fuel cost of current path |
 
 ### Part 5b: Data Structure for Visited Relics
-
-> Fill in the table.
 
 | Property | Your answer |
 |---|---|
@@ -161,8 +127,6 @@
 
 ### Part 5c: Worst-Case Search Space
 
-> Two bullets.
-
 - **Worst-case number of orders considered:** O(K!) where K is the number of relics
 - **Why:** Case where each node has a new lower cost path so every path combination needs to be explored (ie. no pruning occurs).
 
@@ -172,15 +136,11 @@
 
 ### Part 6a: Best-So-Far Tracking
 
-> Three bullets.
-
 - **What is tracked:** total cost of edges of currently collected nodes and the recorded best cost.
 - **When it is used:** The start of the recursive method _explore()
 - **What it allows the algorithm to skip:** If the cost of the current order exceeds the recorded best cost, then we return and skip that path order.
 
 ### Part 6b: Lower Bound Estimation
-
-> Three bullets.
 
 - **What information is available at the current state:** Explored/unexplored nodes, best recorded cost, current path cost, and distances between source nodes.
 - **What the lower bound accounts for:** The lower bound still needs to compare every path combination to find the best cost path.
@@ -188,16 +148,12 @@
 
 ### Part 6c: Pruning Correctness
 
-> One to two bullets. Explain why pruning is safe.
-
 - The pruning condition safe because we're working with guaranteed nonnegative edges, so there's no cycles or edges that could result in lower paths over iterations.
 - Exploration ends for the current order if the current path fuel costs is higher than or equal to the recorded best cost
   
 ---
 
 ## References
-
-> Bullet list. If none beyond lecture notes, write that.
 
 - GeeksForGeeks.org: Python Lists, Adjacency List in Python, Dijkstra's Algorithm. All articles used to help implement methods in part 2 and in parts 5 and 6. Results were verified by copying each method to a separate .py file and running it with an example graph from the test section of torcherbearer.py (in my case, graph_1 was used for testing for part 2).
 - Youtube.com: Dijkstra's Algorithm in 3 minutes (Michael Sambol), Dijkstras Shortest Path Algorithm Explained | With Example | Graph Theory (FelixTechTips). Also just used to help
